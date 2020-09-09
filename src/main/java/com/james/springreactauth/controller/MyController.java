@@ -1,6 +1,7 @@
 package com.james.springreactauth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,9 @@ public class MyController {
 	@Autowired
 	UserRepository repo;
 
+	@Autowired
+	PasswordEncoder encoder;
+
 	@RequestMapping(value = { "/", "/login", "/register" })
 	public String index() {
 		return "index.html";
@@ -22,6 +26,7 @@ public class MyController {
 
 	@PostMapping("/register")
 	public String save(@ModelAttribute User user) {
+		user.setPassword(encoder.encode(user.getPassword()));
 		try {
 			repo.save(user);
 		} catch (Exception e) {
