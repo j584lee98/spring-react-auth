@@ -25,8 +25,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.sessionManagement().and().csrf().disable().authorizeRequests().antMatchers("/static/**").permitAll()
 				.antMatchers("/login").permitAll().antMatchers("/register").permitAll().anyRequest().authenticated()
-				.and().oauth2Login().loginPage("/login").and().formLogin().loginPage("/login").and().logout()
-				.invalidateHttpSession(true).clearAuthentication(true)
+				.and().oauth2Login().loginPage("/login").and().formLogin().loginPage("/login").defaultSuccessUrl("/")
+				.failureUrl("/login?error").and().logout().invalidateHttpSession(true).clearAuthentication(true)
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout")
 				.permitAll();
 	}
